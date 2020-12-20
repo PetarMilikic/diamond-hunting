@@ -1,4 +1,4 @@
-# Install script for directory: /home/anco/Desktop/project_base_v6/project_base_v5/libs/imgui
+# Install script for directory: /home/anco/Desktop/diamond-hunting/libs/imgui
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
