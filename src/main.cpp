@@ -38,7 +38,7 @@ float delta=0.4;
 vector<bool> diamondOutIscrtan(3);
 vector<bool> cubeIscrtan(4);
 int brojSakupljenih=0;
-glm::vec3 transMatrica(-4.0f,-0.5f,5.0f);
+glm::vec3 transMatrica(-2.0f,-0.5f,5.0f);
 
 struct PointLight {
     glm::vec3 position;
@@ -352,7 +352,7 @@ int main()
     pointLightOrao.quadratic = 0.032f;
 
 
-    // render loop
+
     // -----------
     while (!glfwWindowShouldClose(window)) {
         // per-frame time logic
@@ -366,7 +366,6 @@ int main()
         processInput(window);
 
         // render
-        // ------
         glClearColor(0.1f, 0.15f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // don't forget to clear the stencil buffer!
 
@@ -490,7 +489,7 @@ int main()
         glBindVertexArray(0);
 
 
-        //druga teksturaaa
+        //druga tekstura za zgradu
         secondShader.use();
         // light properties
         secondShader.setVec3("viewPos", camera.Position);
@@ -590,8 +589,6 @@ int main()
         banderaShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
 
-
-
         model = glm::mat4(1.0f);
         banderaShader.setMat4("view", view);
         banderaShader.setMat4("projection", projection);
@@ -626,10 +623,7 @@ int main()
 
         }
 
-
         glBindVertexArray(0);
-
-
 
         //end BANDERA
 
@@ -644,12 +638,6 @@ int main()
 
         glBindVertexArray(mesecVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
-
-
-
-
 
 
         // don't forget to enable shader before setting uniforms
@@ -677,13 +665,21 @@ int main()
         modelShader.setMat4("model", model);
         orao.Draw(modelShader);
 
+
         model = glm::mat4(1.0f);
+        model = glm::rotate(model, -0.2f*(float)angle, glm::vec3(0.0f, 3.0f, 0.0f));
         model = glm::translate(model, transMatrica); // translate it down so it's at the center of the scene
-        model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, 45.0f, glm::vec3(0.0f,1.0f,0.0f));
         model = glm::scale(model, glm::vec3(0.3f));	// it's a bit too big for our scene, so scale it down
-        glm::vec4 matricaDragulj = glm::vec4(model * glm::vec4(1.0f,1.0f,1.0f,1.0f));
         modelShader.setMat4("model", model);
+        glm::vec4 matricaPom = glm::vec4(model * glm::vec4(1.0f));
         annies.Draw(modelShader);
+
+        if(matricaPom.x-delta<=camera.Position.x&&matricaPom.x+delta>=camera.Position.x
+            &&matricaPom.z-delta<=camera.Position.z&&matricaPom.z+delta>=camera.Position.z) {
+            glfwSetWindowShouldClose(window, true);
+            std::cout << "GAME OVER, HAUNTED BRIDE KILLED YOU!" << std::endl;
+        }
 
         //dragulj begin:
         draguljShader.use();
@@ -701,9 +697,9 @@ int main()
             if(i>5) {
                 int j=i-6;
                 //glm::vec3(-5.0f, 0.02f, 1.0f),//3.3
-                if(cubePositions[i].x-delta<=matricaDragulj.x&&cubePositions[i].x+delta>=matricaDragulj.x
-                   &&cubePositions[i].y-delta<=matricaDragulj.y&&cubePositions[i].y+delta>=matricaDragulj.y
-                   &&cubePositions[i].z-delta<=matricaDragulj.z&&cubePositions[i].z+delta>=matricaDragulj.z)
+                if(cubePositions[i].x-delta<=camera.Position.x&&cubePositions[i].x+delta>=camera.Position.x
+                   &&cubePositions[i].y-delta<=camera.Position.y&&cubePositions[i].y+delta>=camera.Position.y
+                   &&cubePositions[i].z-delta<=camera.Position.z&&cubePositions[i].z+delta>=camera.Position.z)
 
                 {
                     cubeIscrtan[j]=true;
@@ -724,9 +720,9 @@ int main()
 
                 int j=i-2;
                 //glm::vec3(-5.0f, 0.02f, 1.0f),//3.3
-                if(diamondOutPositions[i].x-delta<=matricaDragulj.x&&diamondOutPositions[i].x+delta>=matricaDragulj.x
-                &&diamondOutPositions[i].y-delta<=matricaDragulj.y&&diamondOutPositions[i].y+delta>=matricaDragulj.y
-                &&diamondOutPositions[i].z-delta<=matricaDragulj.z&&diamondOutPositions[i].z+delta>=matricaDragulj.z)
+                if(diamondOutPositions[i].x-delta<=camera.Position.x&&diamondOutPositions[i].x+delta>=camera.Position.x
+                &&diamondOutPositions[i].y-delta<=camera.Position.y&&diamondOutPositions[i].y+delta>=camera.Position.y
+                &&diamondOutPositions[i].z-delta<=camera.Position.z&&diamondOutPositions[i].z+delta>=camera.Position.z)
 
                 {
                     diamondOutIscrtan[j]=true;
@@ -817,23 +813,6 @@ void processInput(GLFWwindow *window)
 
     }
 
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-        transMatrica.z -= deltaTime * camera.MovementSpeed;
-    }
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-        transMatrica.z += deltaTime * camera.MovementSpeed;
-    }
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-        camera.ProcessKeyboard(LEFT, deltaTime);
-        transMatrica.x -= deltaTime * camera.MovementSpeed;
-    }
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-        camera.ProcessKeyboard(RIGHT, deltaTime);
-        transMatrica.x += deltaTime * camera.MovementSpeed;
-
-    }
 
 }
 
