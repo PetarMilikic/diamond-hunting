@@ -107,6 +107,7 @@ int main()
     Shader floorShader("resources/shaders/floor.vs", "resources/shaders/floor.fs");
     Shader draguljShader("resources/shaders/dragulj.vs","resources/shaders/dragulj.fs");
     Shader modelShader("resources/shaders/modelShader.vs","resources/shaders/modelShader.fs");
+    Shader treeShader("resources/shaders/tree.vs","resources/shaders/tree.fs");
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float cubeVertices[] = {
@@ -163,6 +164,17 @@ int main()
             7.0f, -0.5f,  7.0f, 0.0f,  1.0f,  0.0f, 2.0f, 0.0f,
             -7.0f, -0.5f, -7.0f,  0.0f,  1.0f,  0.0f, -1.0f,  0.0f,
             7.0f, -0.5f, -7.0f, 0.0f,  1.0f,  0.0f,  2.0f, 2.0f
+    };
+
+    float grassVertices[] = {
+            // positions   //texture coords    //Normals=const
+            0.0f,  0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+            0.0f, -0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+            1.0f, -0.5f,  0.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+
+            0.0f,  0.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+            1.0f, -0.5f,  0.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+            1.0f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
     };
 
 
@@ -310,6 +322,21 @@ int main()
 
     glBindVertexArray(0);
 
+    //POSTAVKE ZA TRAVU:
+    unsigned int treeVAO, treeVBO;
+    glGenVertexArrays(1, &treeVAO);
+    glGenBuffers(1, &treeVBO);
+    glBindVertexArray(treeVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, treeVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(grassVertices), &grassVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glBindVertexArray(0);
+
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
 
@@ -322,6 +349,8 @@ int main()
     unsigned int diffuseMap2 = loadTexture(FileSystem::getPath("resources/textures/z3.jpg").c_str());
     unsigned int specularMap2 = loadTexture(FileSystem::getPath("resources/textures/z3.jpg").c_str());
 
+    unsigned int treeTexture=loadTexture(FileSystem::getPath("resources/textures/tree.png").c_str());
+
     shader.use();
     shader.setInt("material.diffuse", 0);
     shader.setInt("material.specular", 1);
@@ -333,6 +362,10 @@ int main()
     secondShader.use();
     shader.setInt("material.diffuse", 0);
     shader.setInt("material.specular", 1);
+
+    treeShader.use();
+    treeShader.setInt("material.diffuse",0);
+    treeShader.setInt("material.specular",1);
 
     //model postavka
     Model orao(FileSystem::getPath("resources/objects/orao/5.obj"));
@@ -742,6 +775,69 @@ int main()
 
         }
 
+        //Iscrtavanje DRVECA:
+        treeShader.use();
+        treeShader.setVec3("viewPos", camera.Position);
+
+        // light properties
+        treeShader.setVec3("light.direction", 0.0f, 1.0f, 0.0f);
+        treeShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+        treeShader.setVec3("light.diffuse", 0.05f, 0.05f, 0.05f);
+        treeShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+        treeShader.setVec3("pointLight.position", lightPos);
+        treeShader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
+        treeShader.setVec3("pointLight.diffuse", 1.0f, 1.0f, 1.0f);
+        treeShader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
+        treeShader.setFloat("pointLight.constant", 1.0f);
+        treeShader.setFloat("pointLight.linear", 0.09);
+        treeShader.setFloat("pointLight.quadratic", 0.032);
+
+        // material properties
+        treeShader.setFloat("material.shininess", 32.0f);
+
+        //spot svetlo
+        treeShader.setVec3("spotLight.position", camera.Position);
+        treeShader.setVec3("spotLight.direction", camera.Front);
+        treeShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+        treeShader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+        treeShader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+        treeShader.setFloat("spotLight.constant", 1.0f);
+        treeShader.setFloat("spotLight.linear", 0.09);
+        treeShader.setFloat("spotLight.quadratic", 0.032);
+        treeShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+        treeShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+        //DOVDE
+
+
+
+        model = glm::mat4(1.0f);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, treeTexture);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, treeTexture);
+        model=glm::translate(model,glm::vec3(-4,3.8,-7.0));
+        model=glm::scale(model,glm::vec3(9,9,9));
+        treeShader.setMat4("model",model);
+        treeShader.setMat4("view",view);
+        treeShader.setMat4("projection",projection);
+        glBindVertexArray(treeVAO);
+        glDrawArrays(GL_TRIANGLES,0,6);
+
+        model=glm::scale(model,glm::vec3(0.7,0.7,0.7));
+        model=glm::translate(model,glm::vec3(1.0,-0.2,0));
+        treeShader.setMat4("model",model);
+       // glBindVertexArray(grassVAO);
+        glDrawArrays(GL_TRIANGLES,0,6);
+
+        model=glm::scale(model,glm::vec3(0.8,0.8,0.8));
+        model=glm::translate(model,glm::vec3(-1.5,-0.12,0));
+        treeShader.setMat4("model",model);
+        // glBindVertexArray(grassVAO);
+        glDrawArrays(GL_TRIANGLES,0,6);
+
+
 
 
 
@@ -787,6 +883,8 @@ int main()
     glDeleteBuffers(1, &planeVBO);
     glDeleteVertexArrays(1, &banderaVAO);
     glDeleteBuffers(1, &banderaVBO);
+    glDeleteVertexArrays(1, &treeVAO);
+    glDeleteBuffers(1, &treeVBO);
 
     glfwTerminate();
     return 0;
