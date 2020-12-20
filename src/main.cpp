@@ -675,8 +675,8 @@ int main()
         glm::vec4 matricaPom = glm::vec4(model * glm::vec4(1.0f));
         annies.Draw(modelShader);
 
-        if(matricaPom.x-delta<=camera.Position.x&&matricaPom.x+delta>=camera.Position.x
-            &&matricaPom.z-delta<=camera.Position.z&&matricaPom.z+delta>=camera.Position.z) {
+        if(matricaPom.x-1.5*delta<=camera.Position.x&&matricaPom.x+1.5*delta>=camera.Position.x
+            &&matricaPom.z-1.5*delta<=camera.Position.z&&matricaPom.z+1.5*delta>=camera.Position.z) {
             glfwSetWindowShouldClose(window, true);
             std::cout << "GAME OVER, HAUNTED BRIDE KILLED YOU!" << std::endl;
         }
