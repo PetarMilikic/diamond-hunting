@@ -18,7 +18,7 @@ stdint.h
 KHR/khrplatform.h
 -
 
-/home/petar/Desktop/PROJEKAT_KONACNO/diamond-hunting/libs/glad/src/glad.c
+/home/petar/Desktop/DH/diamond-hunting/libs/glad/src/glad.c
 stdio.h
 -
 stdlib.h

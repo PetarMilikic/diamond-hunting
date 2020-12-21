@@ -38,6 +38,7 @@ float delta=0.4;
 vector<bool> diamondOutIscrtan(3);
 vector<bool> cubeIscrtan(4);
 int brojSakupljenih=0;
+int brojStarih=-1;
 glm::vec3 transMatrica(-2.0f,-0.5f,5.0f);
 
 struct PointLight {
@@ -393,6 +394,13 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+        if(brojSakupljenih!=brojStarih) {
+            cout << "Number of diamonds collected: " << brojSakupljenih << endl;
+            brojStarih=brojSakupljenih;
+            if(brojSakupljenih>=7)
+                cout<<"CONGRADS!\n";
+            brojStarih=brojSakupljenih;
+        }
 
         // input
         // -----
@@ -732,7 +740,7 @@ int main()
                 //glm::vec3(-5.0f, 0.02f, 1.0f),//3.3
                 if(cubePositions[i].x-delta<=camera.Position.x&&cubePositions[i].x+delta>=camera.Position.x
                    &&cubePositions[i].y-delta<=camera.Position.y&&cubePositions[i].y+delta>=camera.Position.y
-                   &&cubePositions[i].z-delta<=camera.Position.z&&cubePositions[i].z+delta>=camera.Position.z)
+                   &&cubePositions[i].z-delta<=camera.Position.z&&cubePositions[i].z+delta>=camera.Position.z&&!cubeIscrtan[j])
 
                 {
                     cubeIscrtan[j]=true;
@@ -755,7 +763,7 @@ int main()
                 //glm::vec3(-5.0f, 0.02f, 1.0f),//3.3
                 if(diamondOutPositions[i].x-delta<=camera.Position.x&&diamondOutPositions[i].x+delta>=camera.Position.x
                 &&diamondOutPositions[i].y-delta<=camera.Position.y&&diamondOutPositions[i].y+delta>=camera.Position.y
-                &&diamondOutPositions[i].z-delta<=camera.Position.z&&diamondOutPositions[i].z+delta>=camera.Position.z)
+                &&diamondOutPositions[i].z-delta<=camera.Position.z&&diamondOutPositions[i].z+delta>=camera.Position.z&&!diamondOutIscrtan[j])
 
                 {
                     diamondOutIscrtan[j]=true;
