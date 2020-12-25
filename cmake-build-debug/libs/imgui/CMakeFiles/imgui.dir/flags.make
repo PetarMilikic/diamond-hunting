@@ -6,5 +6,5 @@ CXX_FLAGS = -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -O3 -g   -s
 
 CXX_DEFINES = -DIMGUI_IMPL_OPENGL_LOADER_GLAD
 
-CXX_INCLUDES = -I/home/petar/Desktop/DH/diamond-hunting/libs/imgui/include -I/home/petar/Desktop/DH/diamond-hunting/libs/glad/include 
+CXX_INCLUDES = -I/home/anco/Desktop/p/diamond-hunting/libs/imgui/include -I/home/anco/Desktop/p/diamond-hunting/libs/glad/include 
 

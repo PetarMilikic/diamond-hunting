@@ -6,5 +6,5 @@ CXX_FLAGS = -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -O3 -g   -s
 
 CXX_DEFINES = -DGLFW_DLL -DIMGUI_IMPL_OPENGL_LOADER_GLAD
 
-CXX_INCLUDES = -I/home/petar/Desktop/DH/diamond-hunting/cmake-build-debug/configuration -I/home/petar/Desktop/DH/diamond-hunting/include -I/home/petar/Desktop/DH/diamond-hunting/libs/glad/include -I/home/petar/Desktop/DH/diamond-hunting/libs/imgui/include 
+CXX_INCLUDES = -I/home/anco/Desktop/p/diamond-hunting/cmake-build-debug/configuration -I/home/anco/Desktop/p/diamond-hunting/include -I/home/anco/Desktop/p/diamond-hunting/libs/glad/include -I/home/anco/Desktop/p/diamond-hunting/libs/imgui/include 
 

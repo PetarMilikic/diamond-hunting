@@ -371,9 +371,12 @@ int main()
     //model postavka
     Model orao(FileSystem::getPath("resources/objects/orao/5.obj"));
     Model annies(FileSystem::getPath("resources/objects/annies/annies-ghost.obj"));
+    Model moon(FileSystem::getPath("resources/objects/mesecic/moon.obj"));
+
 
     orao.SetShaderTextureNamePrefix("material.");
     annies.SetShaderTextureNamePrefix("material.");
+    moon.SetShaderTextureNamePrefix("material.");
 
     //svetlo za orla
     PointLight pointLightOrao;
@@ -394,14 +397,29 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        if(brojSakupljenih!=brojStarih) {
-            cout << "Number of diamonds collected: " << brojSakupljenih << endl;
-            brojStarih=brojSakupljenih;
-            if(brojSakupljenih>=7)
-                cout<<"CONGRADS!\n";
-            brojStarih=brojSakupljenih;
-        }
 
+        if(currentFrame >= 90.0f) {
+                if (brojSakupljenih >= 7){
+                    //ukoliko vreme istekne, a sakupljeno je vise od 7 dijamanata, korisnik moze ostati da razgleda,
+                    //u suprotnom, igra se prekida
+                }
+                else {
+                    glfwSetWindowShouldClose(window, true);
+                    cout << "GAME OVER! YOU FAILED!" << endl;
+                }
+        }
+        else {
+
+            if (brojSakupljenih != brojStarih) {
+                cout << "Number of diamonds collected: " << brojSakupljenih << endl;
+                brojStarih = brojSakupljenih;
+                if (brojSakupljenih >= 7)
+                    cout << "CONGRADS!\n";
+                brojStarih = brojSakupljenih;
+            }
+
+
+        }
         // input
         // -----
         processInput(window);
@@ -421,7 +439,7 @@ int main()
         floorShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
         floorShader.setVec3("pointLight.position", lightPos);
         floorShader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-        floorShader.setVec3("pointLight.diffuse", 1.0f, 1.0f, 1.0f);
+        floorShader.setVec3("pointLight.diffuse", 0.6f,0.328f,0.181f);
         floorShader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
         floorShader.setFloat("pointLight.constant", 1.0f);
         floorShader.setFloat("pointLight.linear", 0.09);
@@ -478,7 +496,7 @@ int main()
         //point svetlo
         shader.setVec3("pointLight.position", lightPos);
         shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-        shader.setVec3("pointLight.diffuse", 1.0f, 1.0f, 1.0f);
+        shader.setVec3("pointLight.diffuse", 0.6f,0.328f,0.181f);
         shader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
         shader.setFloat("pointLight.constant", 1.0f);
         shader.setFloat("pointLight.linear", 0.09);
@@ -542,7 +560,7 @@ int main()
         //point svetlo
         secondShader.setVec3("pointLight.position", lightPos);
         secondShader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-        secondShader.setVec3("pointLight.diffuse", 1.0f, 1.0f, 1.0f);
+        secondShader.setVec3("pointLight.diffuse", 0.6f,0.328f,0.181f);
         secondShader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
         secondShader.setFloat("pointLight.constant", 1.0f);
         secondShader.setFloat("pointLight.linear", 0.09);
@@ -605,7 +623,7 @@ int main()
         //point svetlo
         banderaShader.setVec3("pointLight.position", lightPos);
         banderaShader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-        banderaShader.setVec3("pointLight.diffuse", 1.0f, 1.0f, 1.0f);
+        banderaShader.setVec3("pointLight.diffuse", 0.6f,0.328f,0.181f);
         banderaShader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
         banderaShader.setFloat("pointLight.constant", 1.0f);
         banderaShader.setFloat("pointLight.linear", 0.09);
@@ -668,19 +686,6 @@ int main()
 
         //end BANDERA
 
-        //crtanje meseca
-        mesecShader.use();
-        mesecShader.setMat4("projection", projection);
-        mesecShader.setMat4("view", view);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(0.3f));
-        mesecShader.setMat4("model", model);
-
-        glBindVertexArray(mesecVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
         // don't forget to enable shader before setting uniforms
         modelShader.use();
         pointLightOrao.position = glm::vec3(camera.Position);
@@ -697,7 +702,7 @@ int main()
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
 
-        //crtanje modela
+        //crtanje orla
         float angle = -glfwGetTime();
         model = glm::mat4(1.0f);
         model = glm::rotate(model, 0.8f*(float)angle, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -706,7 +711,7 @@ int main()
         modelShader.setMat4("model", model);
         orao.Draw(modelShader);
 
-
+        //crtanje uklete mlade
         model = glm::mat4(1.0f);
         model = glm::rotate(model, -0.2f*(float)angle, glm::vec3(0.0f, 3.0f, 0.0f));
         model = glm::translate(model, transMatrica); // translate it down so it's at the center of the scene
@@ -716,10 +721,22 @@ int main()
         glm::vec4 matricaPom = glm::vec4(model * glm::vec4(1.0f));
         annies.Draw(modelShader);
 
+        //crtanje velikog meseca
+        mesecShader.use();
+        mesecShader.setMat4("projection", projection);
+        mesecShader.setMat4("view", view);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(lightPos)); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(0.01f));	// it's a bit too big for our scene, so scale it down
+        mesecShader.setMat4("model", model);
+        //crtanje modela
+        moon.Draw(mesecShader);
+
+
         if(matricaPom.x-1.5*delta<=camera.Position.x&&matricaPom.x+1.5*delta>=camera.Position.x
             &&matricaPom.z-1.5*delta<=camera.Position.z&&matricaPom.z+1.5*delta>=camera.Position.z) {
             glfwSetWindowShouldClose(window, true);
-            std::cout << "GAME OVER, HAUNTED BRIDE KILLED YOU!" << std::endl;
+            std::cout << "GAME OVER! HAUNTED BRIDE KILLED YOU!" << std::endl;
         }
 
         //dragulj begin:
