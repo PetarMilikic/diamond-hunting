@@ -51,7 +51,7 @@ struct PointLight {
     float linear;
     float quadratic;
 };
-
+float LightPower=1.0;
 
 int main()
 {
@@ -390,6 +390,7 @@ int main()
 
 
 
+
     // -----------
     while (!glfwWindowShouldClose(window)) {
         // per-frame time logic
@@ -457,8 +458,8 @@ int main()
         floorShader.setFloat("spotLight.constant", 1.0f);
         floorShader.setFloat("spotLight.linear", 0.09);
         floorShader.setFloat("spotLight.quadratic", 0.032);
-        floorShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-        floorShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+        floorShader.setFloat("spotLight.cutOff", abs(glm::cos(glm::radians(12.5*LightPower*0.2))));
+        floorShader.setFloat("spotLight.outerCutOff", abs(glm::cos(glm::radians(15.0*LightPower*0.2))));
 
         glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 view = camera.GetViewMatrix();
@@ -514,8 +515,8 @@ int main()
         shader.setFloat("spotLight.constant", 1.0f);
         shader.setFloat("spotLight.linear", 0.09);
         shader.setFloat("spotLight.quadratic", 0.032);
-        shader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-        shader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+        shader.setFloat("spotLight.cutOff", abs(glm::cos(glm::radians(12.5*LightPower*0.2))));
+        shader.setFloat("spotLight.outerCutOff", abs(glm::cos(glm::radians(15.0*LightPower*0.2))));
 
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
@@ -578,8 +579,8 @@ int main()
         secondShader.setFloat("spotLight.constant", 1.0f);
         secondShader.setFloat("spotLight.linear", 0.09);
         secondShader.setFloat("spotLight.quadratic", 0.032);
-        secondShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-        secondShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+        secondShader.setFloat("spotLight.cutOff", abs(glm::cos(glm::radians(12.5*LightPower*0.2))));
+        secondShader.setFloat("spotLight.outerCutOff", abs(glm::cos(glm::radians(15.0*LightPower*0.2))));
 
         secondShader.setMat4("view", view);
         secondShader.setMat4("projection", projection);
@@ -644,8 +645,8 @@ int main()
         banderaShader.setFloat("spotLight.constant", 1.0f);
         banderaShader.setFloat("spotLight.linear", 0.09);
         banderaShader.setFloat("spotLight.quadratic", 0.032);
-        banderaShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-        banderaShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+        banderaShader.setFloat("spotLight.cutOff", abs(glm::cos(glm::radians(12.5*LightPower*0.2))));
+        banderaShader.setFloat("spotLight.outerCutOff", abs(glm::cos(glm::radians(15.0*LightPower*0.2))));
 
 
         model = glm::mat4(1.0f);
@@ -830,8 +831,8 @@ int main()
         treeShader.setFloat("spotLight.constant", 1.0f);
         treeShader.setFloat("spotLight.linear", 0.09);
         treeShader.setFloat("spotLight.quadratic", 0.032);
-        treeShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-        treeShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+        treeShader.setFloat("spotLight.cutOff", abs(glm::cos(glm::radians(12.5*LightPower*0.2))));
+        treeShader.setFloat("spotLight.outerCutOff", abs(glm::cos(glm::radians(15.0*LightPower*0.2))));
         //DOVDE
 
 
@@ -934,6 +935,12 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         camera.ProcessKeyboard(RIGHT, deltaTime);
 
+    }
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+        LightPower += 1.0 * 0.2;
+    }
+        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+            LightPower-=1.0*0.2;
     }
 
 

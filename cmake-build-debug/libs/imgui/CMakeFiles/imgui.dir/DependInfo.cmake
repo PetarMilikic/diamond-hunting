@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/anco/Desktop/diamond-hunting/libs/imgui/src/imgui.cpp" "/home/anco/Desktop/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui.cpp.o"
-  "/home/anco/Desktop/diamond-hunting/libs/imgui/src/imgui_demo.cpp" "/home/anco/Desktop/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_demo.cpp.o"
-  "/home/anco/Desktop/diamond-hunting/libs/imgui/src/imgui_draw.cpp" "/home/anco/Desktop/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_draw.cpp.o"
-  "/home/anco/Desktop/diamond-hunting/libs/imgui/src/imgui_impl_glfw.cpp" "/home/anco/Desktop/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_glfw.cpp.o"
-  "/home/anco/Desktop/diamond-hunting/libs/imgui/src/imgui_impl_opengl3.cpp" "/home/anco/Desktop/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_opengl3.cpp.o"
-  "/home/anco/Desktop/diamond-hunting/libs/imgui/src/imgui_tables.cpp" "/home/anco/Desktop/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_tables.cpp.o"
-  "/home/anco/Desktop/diamond-hunting/libs/imgui/src/imgui_widgets.cpp" "/home/anco/Desktop/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_widgets.cpp.o"
+  "/home/petar/Desktop/DIAMOND/diamond-hunting/libs/imgui/src/imgui.cpp" "/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui.cpp.o"
+  "/home/petar/Desktop/DIAMOND/diamond-hunting/libs/imgui/src/imgui_demo.cpp" "/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_demo.cpp.o"
+  "/home/petar/Desktop/DIAMOND/diamond-hunting/libs/imgui/src/imgui_draw.cpp" "/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_draw.cpp.o"
+  "/home/petar/Desktop/DIAMOND/diamond-hunting/libs/imgui/src/imgui_impl_glfw.cpp" "/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_glfw.cpp.o"
+  "/home/petar/Desktop/DIAMOND/diamond-hunting/libs/imgui/src/imgui_impl_opengl3.cpp" "/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_opengl3.cpp.o"
+  "/home/petar/Desktop/DIAMOND/diamond-hunting/libs/imgui/src/imgui_tables.cpp" "/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_tables.cpp.o"
+  "/home/petar/Desktop/DIAMOND/diamond-hunting/libs/imgui/src/imgui_widgets.cpp" "/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/libs/imgui/CMakeFiles/imgui.dir/src/imgui_widgets.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -27,7 +27,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/anco/Desktop/diamond-hunting/cmake-build-debug/libs/glad/CMakeFiles/glad.dir/DependInfo.cmake"
+  "/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/libs/glad/CMakeFiles/glad.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

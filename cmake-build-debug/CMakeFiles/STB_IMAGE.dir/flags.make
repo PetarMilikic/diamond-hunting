@@ -6,7 +6,7 @@ CXX_FLAGS = -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -O3 -g   -s
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/anco/Desktop/diamond-hunting/cmake-build-debug/configuration -I/home/anco/Desktop/diamond-hunting/include 
+CXX_INCLUDES = -I/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/configuration -I/home/petar/Desktop/DIAMOND/diamond-hunting/include 
 
 # Custom flags: CMakeFiles/STB_IMAGE.dir/libs/stb_image.cpp.o_FLAGS = -Wno-shift-negative-value -Wno-implicit-fallthrough
 
