@@ -41,16 +41,39 @@ int brojSakupljenih=0;
 int brojStarih=-1;
 glm::vec3 transMatrica(-2.0f,-0.5f,5.0f);
 
+struct Light {
+    glm::vec3 direction;
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
+};
+
 struct PointLight {
     glm::vec3 position;
     glm::vec3 ambient;
-    glm::vec3 diffuce;
+    glm::vec3 diffuse;
     glm::vec3 specular;
 
     float constant;
     float linear;
     float quadratic;
 };
+
+struct SpotLight {
+    glm::vec3 position;//pozicija svetla
+    glm::vec3 direction;//smer padanja svetla
+    float cutOff;//unutrasnji cut ugao
+    float outerCutOff;//spoljasnji cut ugao
+
+    float constant;
+    float linear;
+    float quadratic;
+
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
+};
+
 float LightPower=1.0;
 
 int main()
@@ -193,16 +216,13 @@ int main()
             glm::vec3( 4.0f,  0.0f, 4.0f),
             glm::vec3(-4.0f,  0.0f, -4.5f)
     };
-
-
-
     glm::vec3 banderaPositions[] = {
             glm::vec3( -1.1, 1.0, 4.5),
             glm::vec3( -1.1f,  1.0f, -1.0f),//2
             glm::vec3(-2.8f, 1.0f, 1.0f),//3.3
             glm::vec3(2.8f, 1.0f, 3.5f),//2.8
             glm::vec3( 2.8, 1.0f, 0.0f),//-2.0
-           glm::vec3( 4.0f, 1.0f, 1.5f)
+            glm::vec3( 4.0f, 1.0f, 1.5f)
 
 
     };
@@ -223,7 +243,6 @@ int main()
 
 
     };
-
 
     // cube VAO
     unsigned int cubeVAO, cubeVBO;
@@ -271,7 +290,6 @@ int main()
     glBindVertexArray(0);
 
     //postavke za benderu:
-
     unsigned int banderaVAO, banderaVBO;
     glGenVertexArrays(1, &banderaVAO);
     glGenBuffers(1, &banderaVBO);
@@ -341,8 +359,8 @@ int main()
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
 
-    unsigned int floorTextureDif = loadTexture(FileSystem::getPath("resources/textures/floor1.jpg").c_str());
-    unsigned int floorTextureSpe = loadTexture(FileSystem::getPath("resources/textures/floor1.jpg").c_str());
+    unsigned int floorTextureDif = loadTexture(FileSystem::getPath("resources/textures/fff.jpg").c_str());
+    unsigned int floorTextureSpe = loadTexture(FileSystem::getPath("resources/textures/fff.jpg").c_str());
 
     unsigned int diffuseMap = loadTexture(FileSystem::getPath("resources/textures/z8.jpg").c_str());
     unsigned int specularMap = loadTexture(FileSystem::getPath("resources/textures/z8.jpg").c_str());
@@ -350,7 +368,7 @@ int main()
     unsigned int diffuseMap2 = loadTexture(FileSystem::getPath("resources/textures/z3.jpg").c_str());
     unsigned int specularMap2 = loadTexture(FileSystem::getPath("resources/textures/z3.jpg").c_str());
 
-    unsigned int treeTexture=loadTexture(FileSystem::getPath("resources/textures/tree.png").c_str());
+    unsigned int treeTexture = loadTexture(FileSystem::getPath("resources/textures/tree.png").c_str());
 
     shader.use();
     shader.setInt("material.diffuse", 0);
@@ -373,23 +391,38 @@ int main()
     Model annies(FileSystem::getPath("resources/objects/annies/annies-ghost.obj"));
     Model moon(FileSystem::getPath("resources/objects/mesecic/moon.obj"));
 
-
     orao.SetShaderTextureNamePrefix("material.");
     annies.SetShaderTextureNamePrefix("material.");
     moon.SetShaderTextureNamePrefix("material.");
 
-    //svetlo za orla
+    //svetlo za modele
+    Light lightOrao;
+    lightOrao.direction = glm::vec3(0.0f,1.0f,0.0f);
+    lightOrao.ambient = glm::vec3(0.2f,0.2f,0.2f);
+    lightOrao.diffuse = glm::vec3(0.05f,0.05f,0.05f);
+    lightOrao.specular = glm::vec3(1.0f,1.0f,1.0f);
+
+
     PointLight pointLightOrao;
     pointLightOrao.position = glm::vec3(4.0,4.0,0.0);
     pointLightOrao.ambient = glm::vec3(0.4,0.4,0.2);
-    pointLightOrao.diffuce = glm::vec3(0.6,0.5,0.6);
+    pointLightOrao.diffuse = glm::vec3(0.6,0.5,0.6);
     pointLightOrao.specular = glm::vec3(1.0,1.0,1.0);
     pointLightOrao.constant = 1.0f;
     pointLightOrao.linear = 0.09f;
     pointLightOrao.quadratic = 0.032f;
 
-
-
+    SpotLight spotLightOrao;
+    spotLightOrao.position = glm::vec3(camera.Position);
+    spotLightOrao.direction = glm::vec3(camera.Front);
+    spotLightOrao.ambient = glm::vec3(0.0f,0.0f,0.0f);
+    spotLightOrao.diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+    spotLightOrao.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+    spotLightOrao.constant = 1.0f;
+    spotLightOrao.linear = 0.09f;
+    spotLightOrao.quadratic = 0.032;
+    spotLightOrao.cutOff = abs(glm::cos(glm::radians(12.5*LightPower*0.2)));
+    spotLightOrao.outerCutOff = abs(glm::cos(glm::radians(15.0*LightPower*0.2)));
 
     // -----------
     while (!glfwWindowShouldClose(window)) {
@@ -400,14 +433,14 @@ int main()
         lastFrame = currentFrame;
 
         if(currentFrame >= 90.0f) {
-                if (brojSakupljenih >= 7){
-                    //ukoliko vreme istekne, a sakupljeno je vise od 7 dijamanata, korisnik moze ostati da razgleda,
-                    //u suprotnom, igra se prekida
-                }
-                else {
-                    glfwSetWindowShouldClose(window, true);
-                    cout << "GAME OVER! YOU FAILED!" << endl;
-                }
+            if (brojSakupljenih >= 7){
+                //ukoliko vreme istekne, a sakupljeno je vise od 7 dijamanata, korisnik moze ostati da razgleda,
+                //u suprotnom, igra se prekida
+            }
+            else {
+                glfwSetWindowShouldClose(window, true);
+                cout << "GAME OVER! YOU FAILED!" << endl;
+            }
         }
         else {
 
@@ -521,7 +554,7 @@ int main()
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
         model = glm::mat4(1.0f);
-       // shader.setMat4("model", model);
+        // shader.setMat4("model", model);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
@@ -687,18 +720,30 @@ int main()
 
         //end BANDERA
 
-        // don't forget to enable shader before setting uniforms
         modelShader.use();
         pointLightOrao.position = glm::vec3(camera.Position);
         modelShader.setVec3("pointLight.position", pointLightOrao.position);
         modelShader.setVec3("pointLight.ambient", pointLightOrao.ambient);
-        modelShader.setVec3("pointLight.diffuce", pointLightOrao.diffuce);
+        modelShader.setVec3("pointLight.diffuse", pointLightOrao.diffuse);
         modelShader.setVec3("pointLight.specular", pointLightOrao.specular);
         modelShader.setFloat("pointLight.constant", pointLightOrao.constant);
         modelShader.setFloat("pointLight.linear", pointLightOrao.linear);
         modelShader.setFloat("pointLight.quadratic", pointLightOrao.quadratic);
         modelShader.setFloat("material.shininess", 32.0f);
         modelShader.setVec3("viewPosition", camera.Position);
+
+        spotLightOrao.position = glm::vec3(camera.Position);
+        spotLightOrao.direction = glm::vec3(camera.Front);
+        modelShader.setVec3("spotLight.direction", spotLightOrao.direction);
+        modelShader.setFloat("spotLight.cutOff", spotLightOrao.cutOff);
+        modelShader.setVec3("spotLight.position", spotLightOrao.position);
+        modelShader.setFloat("spotLight.outerCutOff", spotLightOrao.outerCutOff);
+        modelShader.setVec3("spotLight.ambient", spotLightOrao.ambient);
+        modelShader.setVec3("spotLight.diffuse", spotLightOrao.diffuse);
+        modelShader.setVec3("spotLight.specular", spotLightOrao.specular);
+        modelShader.setFloat("spotLight.constant", spotLightOrao.constant);
+        modelShader.setFloat("spotLight.linear", spotLightOrao.linear);
+        modelShader.setFloat("spotLight.quadratic", spotLightOrao.quadratic);
 
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
@@ -735,7 +780,7 @@ int main()
 
 
         if(matricaPom.x-1.5*delta<=camera.Position.x&&matricaPom.x+1.5*delta>=camera.Position.x
-            &&matricaPom.z-1.5*delta<=camera.Position.z&&matricaPom.z+1.5*delta>=camera.Position.z) {
+           &&matricaPom.z-1.5*delta<=camera.Position.z&&matricaPom.z+1.5*delta>=camera.Position.z) {
             glfwSetWindowShouldClose(window, true);
             std::cout << "GAME OVER! HAUNTED BRIDE KILLED YOU!" << std::endl;
         }
@@ -752,7 +797,7 @@ int main()
 
             //glBindTexture(GL_TEXTURE_2D, 0);
             //(0.8,0.2,0.35,1.0)
-           // draguljShader.setVec4("faktor",0.8,0.2,i/10.0,1.0);
+            // draguljShader.setVec4("faktor",0.8,0.2,i/10.0,1.0);
             if(i>5) {
                 int j=i-6;
                 //glm::vec3(-5.0f, 0.02f, 1.0f),//3.3
@@ -780,8 +825,8 @@ int main()
                 int j=i-2;
                 //glm::vec3(-5.0f, 0.02f, 1.0f),//3.3
                 if(diamondOutPositions[i].x-delta<=camera.Position.x&&diamondOutPositions[i].x+delta>=camera.Position.x
-                &&diamondOutPositions[i].y-delta<=camera.Position.y&&diamondOutPositions[i].y+delta>=camera.Position.y
-                &&diamondOutPositions[i].z-delta<=camera.Position.z&&diamondOutPositions[i].z+delta>=camera.Position.z&&!diamondOutIscrtan[j])
+                   &&diamondOutPositions[i].y-delta<=camera.Position.y&&diamondOutPositions[i].y+delta>=camera.Position.y
+                   &&diamondOutPositions[i].z-delta<=camera.Position.z&&diamondOutPositions[i].z+delta>=camera.Position.z&&!diamondOutIscrtan[j])
 
                 {
                     diamondOutIscrtan[j]=true;
@@ -854,7 +899,7 @@ int main()
         model=glm::scale(model,glm::vec3(0.7,0.7,0.7));
         model=glm::translate(model,glm::vec3(1.0,-0.2,0));
         treeShader.setMat4("model",model);
-       // glBindVertexArray(grassVAO);
+        // glBindVertexArray(grassVAO);
         glDrawArrays(GL_TRIANGLES,0,6);
 
         model=glm::scale(model,glm::vec3(0.8,0.8,0.8));
@@ -877,18 +922,18 @@ int main()
         annies.Draw(shader);
         */
 
-       /*model = glm::translate(model, banderaLightsPositions[0]);
-        model = glm::scale(model, glm::vec3(0.2f));
-        model=glm::rotate(model,glm::radians((float)80.0f),banderaLightsPositions[0]);
+        /*model = glm::translate(model, banderaLightsPositions[0]);
+         model = glm::scale(model, glm::vec3(0.2f));
+         model=glm::rotate(model,glm::radians((float)80.0f),banderaLightsPositions[0]);
 
 
 
 
-        draguljShader.setMat4("model", model);
+         draguljShader.setMat4("model", model);
 
-        glBindVertexArray(draguljVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        */
+         glBindVertexArray(draguljVAO);
+         glDrawArrays(GL_TRIANGLES, 0, 36);
+         */
         //dragulj end
 
         //glStencilMask(0xFF);
@@ -939,8 +984,8 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
         LightPower += 1.0 * 0.2;
     }
-        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            LightPower-=1.0*0.2;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+        LightPower-=1.0*0.2;
     }
 
 

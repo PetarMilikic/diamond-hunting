@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/petar/Desktop/DIAMOND/diamond-hunting/libs/glad/src/glad.c" "/home/petar/Desktop/DIAMOND/diamond-hunting/cmake-build-debug/libs/glad/CMakeFiles/glad.dir/src/glad.c.o"
+  "/home/anco/diamond-hunting/libs/glad/src/glad.c" "/home/anco/diamond-hunting/cmake-build-debug/libs/glad/CMakeFiles/glad.dir/src/glad.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
