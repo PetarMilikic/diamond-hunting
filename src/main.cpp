@@ -20,8 +20,8 @@ void processInput(GLFWwindow *window);
 unsigned int loadTexture(const char *path);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_HEIGHT = 800;
 
 // camera
 Camera camera(glm::vec3(-4.0f,1.7f,10.0f));
@@ -93,7 +93,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "diamond-hunting", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -735,9 +735,9 @@ int main()
         spotLightOrao.position = glm::vec3(camera.Position);
         spotLightOrao.direction = glm::vec3(camera.Front);
         modelShader.setVec3("spotLight.direction", spotLightOrao.direction);
-        modelShader.setFloat("spotLight.cutOff", spotLightOrao.cutOff);
+        modelShader.setFloat("spotLight.cutOff", abs(glm::cos(glm::radians(12.5*LightPower*0.2))));
         modelShader.setVec3("spotLight.position", spotLightOrao.position);
-        modelShader.setFloat("spotLight.outerCutOff", spotLightOrao.outerCutOff);
+        modelShader.setFloat("spotLight.outerCutOff", abs(glm::cos(glm::radians(15.0*LightPower*0.2))));
         modelShader.setVec3("spotLight.ambient", spotLightOrao.ambient);
         modelShader.setVec3("spotLight.diffuse", spotLightOrao.diffuse);
         modelShader.setVec3("spotLight.specular", spotLightOrao.specular);

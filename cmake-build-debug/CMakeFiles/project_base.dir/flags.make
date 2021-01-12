@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_FLAGS = -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -O3 -g   -std=gnu++14
 
-CXX_DEFINES = -DGLFW_DLL -DIMGUI_IMPL_OPENGL_LOADER_GLAD
+CXX_DEFINES = -DIMGUI_IMPL_OPENGL_LOADER_GLAD
 
-CXX_INCLUDES = -I/home/anco/diamond-hunting/cmake-build-debug/configuration -I/home/anco/diamond-hunting/include -I/home/anco/diamond-hunting/libs/glad/include -I/home/anco/diamond-hunting/libs/imgui/include 
+CXX_INCLUDES = -I/home/petar/Desktop/diamond-hunting/cmake-build-debug/configuration -I/home/petar/Desktop/diamond-hunting/include -I/home/petar/Desktop/diamond-hunting/libs/glad/include -I/home/petar/Desktop/diamond-hunting/libs/imgui/include 
 
