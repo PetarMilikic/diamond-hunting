@@ -14,7 +14,6 @@ struct Material {
 
 //direkciono svetlo
 struct Light {
-    //vec3 position;
     //poziciju menjamo sa smerom padanja svetlosti iz tog izvora
     vec3 direction;
 
@@ -121,7 +120,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-    float distance = length(light.position - fragPos);//length je duzina vektora
+    float distance = length(light.position - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
     float theta = dot(lightDir, normalize(-light.direction));

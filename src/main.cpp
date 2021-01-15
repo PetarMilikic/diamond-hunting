@@ -19,12 +19,11 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 unsigned int loadTexture(const char *path);
 
-// settings
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 800;
 
 // camera
-Camera camera(glm::vec3(-4.0f,1.7f,10.0f));
+Camera camera(glm::vec3(-3.0f,1.7f,8.0f));
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;
@@ -32,7 +31,7 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-glm::vec3 lightPos(glm::vec3(6.5f,3.0f,0.0f));
+glm::vec3 lightPos(glm::vec3(4.5f,3.0f,0.0f));
 
 float delta=0.4;
 vector<bool> diamondOutIscrtan(3);
@@ -133,7 +132,7 @@ int main()
     Shader modelShader("resources/shaders/modelShader.vs","resources/shaders/modelShader.fs");
     Shader treeShader("resources/shaders/tree.vs","resources/shaders/tree.fs");
     // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
+    // ------------------------------------------------------------------r
     float cubeVertices[] = {
             // positions          // texture Coords
             -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
@@ -400,14 +399,14 @@ int main()
     lightOrao.direction = glm::vec3(0.0f,1.0f,0.0f);
     lightOrao.ambient = glm::vec3(0.2f,0.2f,0.2f);
     lightOrao.diffuse = glm::vec3(0.05f,0.05f,0.05f);
-    lightOrao.specular = glm::vec3(1.0f,1.0f,1.0f);
+    lightOrao.specular = glm::vec3(0.8f,0.0f,0.0f);
 
 
     PointLight pointLightOrao;
-    pointLightOrao.position = glm::vec3(4.0,4.0,0.0);
+    pointLightOrao.position = glm::vec3(lightPos);
     pointLightOrao.ambient = glm::vec3(0.4,0.4,0.2);
     pointLightOrao.diffuse = glm::vec3(0.6,0.5,0.6);
-    pointLightOrao.specular = glm::vec3(1.0,1.0,1.0);
+    pointLightOrao.specular = glm::vec3(0.8f,0.0,0.0);
     pointLightOrao.constant = 1.0f;
     pointLightOrao.linear = 0.09f;
     pointLightOrao.quadratic = 0.032f;
@@ -417,7 +416,7 @@ int main()
     spotLightOrao.direction = glm::vec3(camera.Front);
     spotLightOrao.ambient = glm::vec3(0.0f,0.0f,0.0f);
     spotLightOrao.diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
-    spotLightOrao.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+    spotLightOrao.specular = glm::vec3(0.8f, 0.0f, 0.0f);
     spotLightOrao.constant = 1.0f;
     spotLightOrao.linear = 0.09f;
     spotLightOrao.quadratic = 0.032;
@@ -470,11 +469,11 @@ int main()
         floorShader.setVec3("light.direction", 0.0f, 1.0f, 0.0f);
         floorShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
         floorShader.setVec3("light.diffuse", 0.05f, 0.05f, 0.05f);
-        floorShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        floorShader.setVec3("light.specular", 1.0f, 0.0f, 0.0f);
         floorShader.setVec3("pointLight.position", lightPos);
         floorShader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
         floorShader.setVec3("pointLight.diffuse", 0.6f,0.328f,0.181f);
-        floorShader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
+        floorShader.setVec3("pointLight.specular", 1.0f, 0.0f, 0.0f);
         floorShader.setFloat("pointLight.constant", 1.0f);
         floorShader.setFloat("pointLight.linear", 0.09);
         floorShader.setFloat("pointLight.quadratic", 0.032);
@@ -487,7 +486,7 @@ int main()
         floorShader.setVec3("spotLight.direction", camera.Front);
         floorShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
         floorShader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-        floorShader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+        floorShader.setVec3("spotLight.specular", 1.0f, 0.0f, 0.0f);
         floorShader.setFloat("spotLight.constant", 1.0f);
         floorShader.setFloat("spotLight.linear", 0.09);
         floorShader.setFloat("spotLight.quadratic", 0.032);
@@ -524,14 +523,14 @@ int main()
         shader.setVec3("viewPos", camera.Position);
         shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
         shader.setVec3("light.diffuse", 0.05f, 0.05f, 0.05f);
-        shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        shader.setVec3("light.specular", 0.8f, 0.0f, 0.0f);
         shader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
 
         //point svetlo
         shader.setVec3("pointLight.position", lightPos);
         shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
         shader.setVec3("pointLight.diffuse", 0.6f,0.328f,0.181f);
-        shader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
+        shader.setVec3("pointLight.specular", 0.8f, 0.0f, 0.0f);
         shader.setFloat("pointLight.constant", 1.0f);
         shader.setFloat("pointLight.linear", 0.09);
         shader.setFloat("pointLight.quadratic", 0.032);
@@ -544,7 +543,7 @@ int main()
         shader.setVec3("spotLight.direction", camera.Front);
         shader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
         shader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-        shader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+        shader.setVec3("spotLight.specular", 0.8f, 0.0f, 0.0f);
         shader.setFloat("spotLight.constant", 1.0f);
         shader.setFloat("spotLight.linear", 0.09);
         shader.setFloat("spotLight.quadratic", 0.032);
@@ -588,14 +587,14 @@ int main()
         secondShader.setVec3("viewPos", camera.Position);
         secondShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
         secondShader.setVec3("light.diffuse", 0.05f, 0.05f, 0.05f);
-        secondShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        secondShader.setVec3("light.specular", 1.0f, 0.0f, 0.0f);
         secondShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
 
         //point svetlo
         secondShader.setVec3("pointLight.position", lightPos);
         secondShader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
         secondShader.setVec3("pointLight.diffuse", 0.6f,0.328f,0.181f);
-        secondShader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
+        secondShader.setVec3("pointLight.specular", 1.0f, 0.0f, 0.0f);
         secondShader.setFloat("pointLight.constant", 1.0f);
         secondShader.setFloat("pointLight.linear", 0.09);
         secondShader.setFloat("pointLight.quadratic", 0.032);
@@ -608,7 +607,7 @@ int main()
         secondShader.setVec3("spotLight.direction", camera.Front);
         secondShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
         secondShader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-        secondShader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+        secondShader.setVec3("spotLight.specular", 1.0f, 0.0f, 0.0f);
         secondShader.setFloat("spotLight.constant", 1.0f);
         secondShader.setFloat("spotLight.linear", 0.09);
         secondShader.setFloat("spotLight.quadratic", 0.032);
@@ -651,14 +650,14 @@ int main()
         banderaShader.setVec3("viewPos", camera.Position);
         banderaShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
         banderaShader.setVec3("light.diffuse", 0.05f, 0.05f, 0.05f);
-        banderaShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        banderaShader.setVec3("light.specular", 0.6f, 1.0f, 1.0f);
         banderaShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
 
         //point svetlo
         banderaShader.setVec3("pointLight.position", lightPos);
         banderaShader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
         banderaShader.setVec3("pointLight.diffuse", 0.6f,0.328f,0.181f);
-        banderaShader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
+        banderaShader.setVec3("pointLight.specular", 0.6f, 1.0f, 1.0f);
         banderaShader.setFloat("pointLight.constant", 1.0f);
         banderaShader.setFloat("pointLight.linear", 0.09);
         banderaShader.setFloat("pointLight.quadratic", 0.032);
@@ -666,7 +665,7 @@ int main()
         // material properties
         banderaShader.setVec3("material.ambient", 0.1,0.1,0.1);
         banderaShader.setVec3("material.diffuse", 0.5f, 0.5f, 0.5f);
-        banderaShader.setVec3("material.specular", 0.50196078f, 0.50196078f, 0.50196078f);
+        banderaShader.setVec3("material.specular", 0.6f, 0.0f, 0.f);
         banderaShader.setFloat("material.shininess", 32.0f);
 
         //spot svetlo
@@ -680,7 +679,6 @@ int main()
         banderaShader.setFloat("spotLight.quadratic", 0.032);
         banderaShader.setFloat("spotLight.cutOff", abs(glm::cos(glm::radians(12.5*LightPower*0.2))));
         banderaShader.setFloat("spotLight.outerCutOff", abs(glm::cos(glm::radians(15.0*LightPower*0.2))));
-
 
         model = glm::mat4(1.0f);
         banderaShader.setMat4("view", view);
@@ -721,7 +719,13 @@ int main()
         //end BANDERA
 
         modelShader.use();
-        pointLightOrao.position = glm::vec3(camera.Position);
+        modelShader.setVec3("viewPosition", camera.Position);
+
+        modelShader.setVec3("light.direction", lightOrao.direction);
+        modelShader.setVec3("light.ambient", lightOrao.ambient);
+        modelShader.setVec3("light.diffuse", lightOrao.diffuse);
+        modelShader.setVec3("light.specular", lightOrao.specular);
+
         modelShader.setVec3("pointLight.position", pointLightOrao.position);
         modelShader.setVec3("pointLight.ambient", pointLightOrao.ambient);
         modelShader.setVec3("pointLight.diffuse", pointLightOrao.diffuse);
@@ -730,7 +734,6 @@ int main()
         modelShader.setFloat("pointLight.linear", pointLightOrao.linear);
         modelShader.setFloat("pointLight.quadratic", pointLightOrao.quadratic);
         modelShader.setFloat("material.shininess", 32.0f);
-        modelShader.setVec3("viewPosition", camera.Position);
 
         spotLightOrao.position = glm::vec3(camera.Position);
         spotLightOrao.direction = glm::vec3(camera.Front);
@@ -780,6 +783,7 @@ int main()
 
 
         if(matricaPom.x-1.5*delta<=camera.Position.x&&matricaPom.x+1.5*delta>=camera.Position.x
+           &&matricaPom.y-1.5*delta<=camera.Position.y&&matricaPom.z+1.5*delta>=camera.Position.y
            &&matricaPom.z-1.5*delta<=camera.Position.z&&matricaPom.z+1.5*delta>=camera.Position.z) {
             glfwSetWindowShouldClose(window, true);
             std::cout << "GAME OVER! HAUNTED BRIDE KILLED YOU!" << std::endl;

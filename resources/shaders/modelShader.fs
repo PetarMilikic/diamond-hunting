@@ -13,7 +13,6 @@ struct Material {
 
 //direkciono svetlo
 struct Light {
-
     //poziciju menjamo sa smerom padanja svetlosti iz tog izvora
     vec3 direction;
 
@@ -52,7 +51,7 @@ struct SpotLight {
 };
 
 uniform Light light;
-uniform PointLight pointLight;//treba nam point svetlo koje cemo podesavati iz main-a
+uniform PointLight pointLight;
 uniform vec3 viewPosition; //pozicija kamere
 uniform Material material;
 uniform SpotLight spotLight;
@@ -82,8 +81,8 @@ vec3 CalcDirLight(Light light, vec3 normal, vec3 viewDir)
     float diff = max(dot(normal, lightDir), 0.0);
     // spekularna komponenta
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    // combine results
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
     vec3 ambient = light.ambient * vec3(texture(material.texture_diffuse1, TexCoords));
     vec3 diffuse = light.diffuse * diff * vec3(texture(material.texture_diffuse1, TexCoords));
     vec3 specular = light.specular * spec * vec3(texture(material.texture_specular1, TexCoords));
@@ -98,8 +97,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float diff = max(dot(normal, lightDir), 0.0);
 
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
     float distance = length(light.position - fragPos);//distanca je rastojanje izmedju izvora svetlosti i fragmenta
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
@@ -121,9 +120,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float diff = max(dot(normal, lightDir), 0.0);
 
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-
-    float distance = length(light.position - fragPos);//length je duzina vektora
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
+    float distance = length(light.position - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
     float theta = dot(lightDir, normalize(-light.direction));
