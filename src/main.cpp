@@ -222,8 +222,6 @@ int main()
             glm::vec3(2.8f, 1.0f, 3.5f),//2.8
             glm::vec3( 2.8, 1.0f, 0.0f),//-2.0
             glm::vec3( 4.0f, 1.0f, 1.5f)
-
-
     };
     glm::vec3 diamondOutPositions[]={
             glm::vec3( -1.3, 0.3, 4.0),
@@ -239,8 +237,6 @@ int main()
             glm::vec3(2.8f, 2.6f, 3.5f),//2.8
             glm::vec3( 2.8, 2.6f, 0.0f),//-2.0
             glm::vec3( 4.0f, 2.6f, 1.5f)
-
-
     };
 
     // cube VAO
@@ -325,7 +321,6 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-
     glBindVertexArray(0);
 
     //postavke za dragulje:
@@ -337,7 +332,6 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-
     glBindVertexArray(0);
 
     //POSTAVKE ZA TRAVU:
@@ -401,7 +395,6 @@ int main()
     lightOrao.diffuse = glm::vec3(0.05f,0.05f,0.05f);
     lightOrao.specular = glm::vec3(0.8f,0.0f,0.0f);
 
-
     PointLight pointLightOrao;
     pointLightOrao.position = glm::vec3(lightPos);
     pointLightOrao.ambient = glm::vec3(0.4,0.4,0.2);
@@ -450,7 +443,6 @@ int main()
                     cout << "CONGRADS!\n";
                 brojStarih = brojSakupljenih;
             }
-
 
         }
         // input

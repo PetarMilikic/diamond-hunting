@@ -6,5 +6,5 @@ C_FLAGS = -g
 
 C_DEFINES = 
 
-C_INCLUDES = -I/home/anco/Desktop/bling/diamond-hunting/libs/glad/include 
+C_INCLUDES = -I/home/anco/Desktop/bl/diamond-hunting/libs/glad/include 
 

@@ -1,4 +1,4 @@
-# Install script for directory: /home/anco/Desktop/bling/diamond-hunting/libs/glad
+# Install script for directory: /home/anco/Desktop/bl/diamond-hunting/libs/glad
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
